@@ -47,6 +47,19 @@ class Replier(ABC):
         return self.get_reply(content + "\n[bait_start]\n")
 
 
+class SimpleReplier(Replier):
+    name = "Simple"
+
+    def _gen_text(self, prompt) -> str:
+        template_dir = os.path.join(TEMPLATES_DIR, random.choice(os.listdir(TEMPLATES_DIR)))
+        target_filename = random.choice(os.listdir(template_dir))
+
+        with open(os.path.join(template_dir, target_filename), "r", encoding="utf8") as f:
+            res = f.read()
+
+        return res + "[bait_end]"
+
+
 class NeoEnronReplier(Replier):
     name = "NeoEnron"
 
